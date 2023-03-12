@@ -1,0 +1,6 @@
+1: Install h5py library into your virtual environment in Anaconda using the following command in the terminal: 'conda install h5py' and import it into your project.
+2: Install nexusformat package into the environment (this will help us view the hierarchical structure of our file): 'conda install -c conda-forge nexusformat' and import into the project.
+3: Instantiate an HDF5 file using the h5py method 'h5py.File('filename.h5', 'r' or 'w')', r or w just indicates read or write access to the file.
+4: Data is separated in an HDF5 file via groups. Each of us will work to add our individual data to its own group.
+5: Within groups are datasets. Create a dataset with 'h5group.create_dataset(name, shape, dtype, chunks, compression = 'gzip', scaleoffset = True, shuffle = True)
+6: To view the overall structure of the file, make use of the nexusformat package: 'f = nx.nxload('newfile.h5')' 'print(f.tree)'
