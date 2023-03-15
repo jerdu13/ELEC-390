@@ -1,0 +1,5 @@
+The big combined file has the following order:
+
+1. Jumping data
+2. Walking data (no stairs)
+3. Messy data
