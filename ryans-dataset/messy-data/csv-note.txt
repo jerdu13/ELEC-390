@@ -1,0 +1,3 @@
+Order followed for combining csvs into single csv is alphabetical, ascending (i.e., folders from A to Z)
+
+(every 10 seconds)

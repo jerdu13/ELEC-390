@@ -1,0 +1,4 @@
+Order followed for combining csvs into walking-combined.csv is alphabetical, ascending (i.e., folders from A to Z)
+*EXCEPT downstairs/upstairs data is not included, rather appended in separate stairs-combined.csv*
+
+(every 10 seconds)
