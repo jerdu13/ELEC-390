@@ -20,6 +20,12 @@ RM_csv = np.genfromtxt('ryans-dataset\\ryan-data-combined.csv', dtype=float, del
 # transfer numpy array to Ryan group
 RM_dset = h5RM.create_dataset('ryan-dataset', data=RM_csv)
 
+# load in/transfer for Louie
+LT_csv = np.genfromtxt('Louie\'s-Dataset\\louie-data-combined.csv', dtype=float, delimiter=',', skip_header=1)
+LT_dset = h5LT.create_dataset('louie-dataset', data=LT_csv)
+
+
+# access like this --> print(RM_dset[2])
 
 # print the hdf5 organization nicely
 f = nx.nxload('elec390.h5')
