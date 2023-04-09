@@ -3,7 +3,7 @@ import glob
 
 # Read multiple CSV files and append them into one numpy array
 # change the path to your relative path
-path = 'Louie\'s-Dataset\\*.csv'
+path = 'Louie\'s-Dataset/Walking-Inhand-Dataset\\*.csv'
 csv_files = glob.glob(path)
 combined_data = []
 for file in csv_files:
