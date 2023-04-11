@@ -7,9 +7,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import cross_val_score
 from sklearn.utils import resample
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.ensemble import StackingClassifier
-from sklearn.model_selection import GridSearchCV
 
 # Load data from CSV file
 df = pd.read_csv('Louie\'s-Dataset/louie-data-combined.csv')
@@ -33,41 +30,31 @@ X_train_resampled = pd.DataFrame(X_train_resampled, columns=X.columns)
 X_train_resampled = pd.concat([X_train_resampled, pd.DataFrame(X_train[y_train == 1], columns=X.columns)])
 y_train_resampled = pd.concat([y_train_resampled, y_train[y_train == 1]])
 
-# Create base classifiers
-logreg = LogisticRegression(C=1.0, solver='lbfgs', random_state=42)
-rf = RandomForestClassifier(n_estimators=100, random_state=42)
-gbm = GradientBoostingClassifier(n_estimators=100, random_state=42)
+# Create a pipeline for preprocessing and logistic regression
+pipeline = make_pipeline(
+    LogisticRegression(C=1.0)    # Logistic Regression model with default regularization strength (C=1.0)
+)
 
-# Create stacking classifier
-estimators = [('logreg', logreg), ('rf', rf), ('gbm', gbm)]
-stacking_classifier = StackingClassifier(estimators=estimators, final_estimator=logreg)
+# Perform cross-validation
+scores = cross_val_score(pipeline, X_train_resampled, y_train_resampled, cv=5)
+print("Cross-validated accuracy:", scores.mean())
 
-# Define hyperparameter grid for grid search
-param_grid = {
-    'logreg__C': [0.01, 0.1, 1, 10],
-    'rf__n_estimators': [50, 100, 200],
-    'gbm__n_estimators': [50, 100, 200],
-}
+# Fit the pipeline to the training data
+pipeline.fit(X_train_resampled, y_train_resampled)
 
-# Perform grid search for hyperparameter tuning
-grid_search = GridSearchCV(stacking_classifier, param_grid, cv=5)
-grid_search.fit(X_train_resampled, y_train_resampled)
+# Predict on the testing data
+y_pred = pipeline.predict(X_test)
 
-# Print best hyperparameter values
-print("Best Hyperparameters:")
-print(grid_search.best_params_)
-
-# Fit the stacking classifier with best hyperparameter values
-stacking_classifier_best = grid_search.best_estimator_
-stacking_classifier_best.fit(X_train_resampled, y_train_resampled)
-
-# Predict on test set
-y_pred = stacking_classifier_best.predict(X_test)
-
-# Calculate accuracy
+# Calculate accuracy score
 accuracy = accuracy_score(y_test, y_pred)
-print("Accuracy: {:.2f}%".format(accuracy * 100))
+print("Accuracy:", accuracy)
 
-
+# Plot predicted classes
+plt.figure(figsize=(8, 6))
+plt.scatter(X_test[:, 0], X_test[:, 1], c=y_pred, cmap='coolwarm')
+plt.xlabel('X1')
+plt.ylabel('X2')
+plt.title('Predicted Classes (0: Walking, 1: Jumping)')
+plt.show()
 
 
