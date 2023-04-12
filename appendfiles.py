@@ -3,7 +3,8 @@ import glob
 
 # Read multiple CSV files and append them into one numpy array
 # change the path to your relative path
-path = 'Louie\'s-Dataset/Walking-Inhand-Dataset\\*.csv'
+
+path = 'jeremys-dataset\\*.csv'
 csv_files = glob.glob(path)
 combined_data = []
 for file in csv_files:
@@ -12,4 +13,4 @@ for file in csv_files:
 combined_data = np.concatenate(combined_data, axis=0)
 
 # Save combined data as a new CSV file
-np.savetxt('data-combined.csv', combined_data, delimiter=',')
+np.savetxt('jeremy-data-combined.csv', combined_data, delimiter=',')
