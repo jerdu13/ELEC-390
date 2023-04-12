@@ -10,7 +10,7 @@ from sklearn.utils import resample
 from sklearn.preprocessing import PolynomialFeatures
 
 # Load data from CSV file
-df = pd.read_csv('jeremys-dataset/jeremy-data-combined.csv')
+df = pd.read_csv('ryans-dataset/ryan-data-combined.csv')
 
 # Extract features and target variable
 X = df.iloc[:, :6]  # Features are the first 6 columns
