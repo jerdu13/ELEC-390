@@ -39,10 +39,10 @@ colours = ['blue','red']
 
 
 # create the plot for first dataset
-ax.plot(time1,first_abs_accel,c=colours[0], linewidth=1, alpha=0.4)
+ax.plot(time1,first_abs_accel,c=colours[0], linewidth=1, alpha=0.5)
 
 # create the plot for second dataset
-ax.plot(time2,second_abs_accel,c=colours[1], linewidth=1,alpha=0.4)
+ax.plot(time2,second_abs_accel,c=colours[1], linewidth=1,alpha=0.5)
 
 ax.set_xlabel('Time (s)', fontsize=8)
 ax.set_ylabel('Absolute Acceleration ($m/s^2$)', fontsize=8)
