@@ -34,7 +34,7 @@ time2 = pd.Series(time2)
 
 
 # initialize figure and axes objects
-fig, ax = plt.subplots(figsize=(10,5))
+fig, ax = plt.subplots(figsize=(8,5))
 colours = ['blue','red']
 
 

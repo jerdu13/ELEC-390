@@ -30,11 +30,11 @@ if isLabeled:
 # estimate time increments to be 0.01 seconds
 time = [0] * len(abs_accel)
 for i in range(len(abs_accel)):
-    time[i] = 0.01*i
+    time[i] = 0.011*i
 time = pd.Series(time)
 
 # initialize figure and axes objects
-fig, ax = plt.subplots(figsize=(10,5))
+fig, ax = plt.subplots(figsize=(8,5))
 legends = ['Walking - Body', 'Walking - Hand', 'Jumping - Body', 'Jumping - Hand']
 colours = ['blue','cyan','red','orange']
 
@@ -46,7 +46,9 @@ if isLabeled:
     for j in range(2): 
         # for each placement
         for k in range(2):
-            ax.scatter(time[(action==j) & (placement==k)],abs_accel[(action==j) & (placement==k)],c=colours[m], marker=".", s=2)
+            # choose scatter or line graph, w/e you want, just comment out the other
+            #ax.scatter(time[(action==j) & (placement==k)],abs_accel[(action==j) & (placement==k)],c=colours[m], marker=".", s=2)
+            ax.plot(time[(action==j) & (placement==k)],abs_accel[(action==j) & (placement==k)],c=colours[m], linewidth=0.5)
             m+=1
 else:
     ax.scatter(time,abs_accel,c='green',marker=".", s=2)
