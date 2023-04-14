@@ -32,7 +32,7 @@ from sklearn.decomposition import PCA
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
-### ADDED FROM train-test.py ###
+### ADDED FROM train-test.py -> will delete and just import hdf5 eventually ###
 dset1 = pd.read_csv("shuffling-splitting-ready\\normalized-jeremy-data-combined.csv")
 dset2 = pd.read_csv("shuffling-splitting-ready\\normalized-louie-data-combined.csv")
 dset3 = pd.read_csv("shuffling-splitting-ready\\normalized-ryan-data-combined.csv")
@@ -96,7 +96,7 @@ y_train_resampled = pd.concat([y_train_resampled, y_train[y_train == 1]])
 # Create a pipeline for preprocessing and logistic regression              
 pipeline = make_pipeline(
     PolynomialFeatures(degree=2),  # Add polynomial features with degree 2
-    LogisticRegression(solver='liblinear', max_iter=1000)  # Logistic Regression model with solver='liblinear' and max_iter=1000
+    LogisticRegression(solver='liblinear', max_iter=10000)  # Logistic Regression model with solver='liblinear' and max_iter=1000
 )
 
 
