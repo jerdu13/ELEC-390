@@ -1,3 +1,5 @@
+import csv
+import joblib
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,19 +22,7 @@ from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.decomposition import PCA
 
-### ORIGINAL TRAIN-TEST splitting (incorrect?) ###
-# # Load data from CSV file
-# df = pd.read_csv('shuffling-splitting-ready\\normalized-ryan-data-combined.csv')
-
-# # Extract features and target variable
-# X = df.iloc[:, 1:4]  # Features are the first 6 columns
-# y = df.iloc[:, 5]   # Target variable is the 7th column
-
-# # Split data into training and testing sets
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-
-### ADDED FROM train-test.py -> will delete and just import hdf5 eventually ###
+### ADDED FROM train-test.py ###
 dset1 = pd.read_csv("shuffling-splitting-ready\\normalized-jeremy-data-combined.csv")
 dset2 = pd.read_csv("shuffling-splitting-ready\\normalized-louie-data-combined.csv")
 dset3 = pd.read_csv("shuffling-splitting-ready\\normalized-ryan-data-combined.csv")
@@ -45,7 +35,7 @@ window_size = 5*sampling_rate
 ratio = 0.9
 
 rows = dset.shape[0] # number of rows in combined csv
-num_windows = int(rows/window_size)
+num_windows = int(rows//window_size)
 
 # initialize np array for segmented data
 segments = np.zeros((num_windows, window_size, dset.shape[1])) # 3-D array. Can be thought of as an array of windows, where each window has 100 rows and 5 columns
@@ -93,10 +83,10 @@ y_train_resampled = pd.concat([y_train_resampled, y_train[y_train == 1]])
 
 
 
-# Create a pipeline for preprocessing and logistic regression              
+# Create a pipeline for preprocessing and logistic regression
 pipeline = make_pipeline(
     PolynomialFeatures(degree=2),  # Add polynomial features with degree 2
-    LogisticRegression(solver='liblinear', max_iter=10000)  # Logistic Regression model with solver='liblinear' and max_iter=1000
+    LogisticRegression(solver='liblinear', max_iter=1000)  # Logistic Regression model with solver='liblinear' and max_iter=1000
 )
 
 
@@ -110,6 +100,15 @@ pipeline.fit(X_train_resampled, y_train_resampled)
 # Predict on the testing data
 y_pred = pipeline.predict(X_test)
 
+titles = ['Window', 'Action']
+result_map = {0: 'Walking', 1: 'Jumping'}
+
+with open('results.csv', 'w', newline='') as outputfile:
+    write = csv.writer(outputfile)
+    write.writerow(titles)
+    for i, value in enumerate(y_pred):
+        write.writerow([i, (result_map[y_pred[i]])])
+
 # Calculate accuracy score
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
@@ -118,6 +117,7 @@ print("Accuracy:", accuracy)
 recall = recall_score(y_test, y_pred)
 print("Recall is: ", recall)
 
+joblib.dump(pipeline, 'jump-walk_model.joblib')
 # create and plot learning curve
 trsz, trsc, tesc = learning_curve(pipeline, X_train_resampled, y_train_resampled, train_sizes=np.linspace(0.01, 1.0, 10))
 display = LearningCurveDisplay(train_sizes=trsz, train_scores=trsc, test_scores=tesc, score_name='Accuracy Score')
