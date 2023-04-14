@@ -54,8 +54,12 @@ class CsvFileUpload(QWidget):
         self.button = QPushButton('Select CSV file.', self)
         self.button.clicked.connect(self.openFileDialog)
 
+        self.accuracy_label = QLabel('', self)
+        self.accuracy_label.setAlignment(Qt.AlignCenter)
+
         self.vert_layout.addWidget(self.label, alignment=Qt.AlignCenter)
         self.vert_layout.addWidget(self.button, alignment=Qt.AlignCenter)
+        self.vert_layout.addWidget(self.accuracy_label)
         self.vert_layout.addStretch(1)  # Add stretch back
 
         self.table_container = QVBoxLayout()  # Create a separate QVBoxLayout container for the table
@@ -118,6 +122,9 @@ class CsvFileUpload(QWidget):
                 for i, value in enumerate(y_pred):
                     write.writerow([i, (result_map[y_pred[i]])])
             outputfile.close()
+            accuracy = accuracy_score(y_test, y_pred)
+            accuracy2 = accuracy*100
+            self.accuracy_label.setText(f'Accuracy: {accuracy2:.2f}%')  # Update accuracy_label text with the accuracy value
             return 'results.csv'
     def displayCsvTable(self, file):
         if file:
@@ -137,6 +144,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initDisplay()
+        self.resize(800, 800)
 
     def initDisplay(self):
         self.setWindowTitle('ELEC 390 - Jumping/Walking Classifier')
